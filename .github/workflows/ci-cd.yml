@@ -13,35 +13,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Логін у Docker Registry
+      # 2. Логін у Docker Hub
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # 3. Збірка Docker-образу
-      - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USER }}/devops-test:latest .
+      # 3. Встановлення Minikube
+      - name: Set up Minikube
+        uses: medyagh/setup-minikube@v0.0.14
 
-      # 4. Push у registry
-      - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USER }}/devops-test:latest
-
-      # 5. Налаштування kubectl
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
-        with:
-          version: 'latest'
-
-         # 6. Підключення до Kubernetes
-      - name: Configure K8s
+      # 4. Збірка Docker-образу прямо в Minikube
+      - name: Build Docker image in Minikube
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG_FILE }}" > ~/.kube/config
+          eval $(minikube -p minikube docker-env)
+          docker build -t devops-test:latest .
 
-      # 7. Деплой у Kubernetes
-      - name: Deploy to Kubernetes
+      # 5. Деплой у Minikube
+      - name: Deploy to Minikube
         run: |
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/service.yaml
+
+      # 6. Перевірка статусу
+      - name: Check pods
+        run: kubectl get pods -o wide
