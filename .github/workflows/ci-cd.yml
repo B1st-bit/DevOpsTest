@@ -34,11 +34,11 @@ jobs:
         with:
           version: 'latest'
 
-      # 6. Підключення до Kubernetes
+         # 6. Підключення до Kubernetes
       - name: Configure K8s
         run: |
-          echo "${{ secrets.KUBECONFIG_FILE }}" > kubeconfig
-          export KUBECONFIG=kubeconfig
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_FILE }}" > ~/.kube/config
 
       # 7. Деплой у Kubernetes
       - name: Deploy to Kubernetes
