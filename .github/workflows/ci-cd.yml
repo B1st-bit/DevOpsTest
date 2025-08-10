@@ -37,7 +37,7 @@ jobs:
       - name: Apply ConfigMap and Secrets
         run: |
           kubectl apply -f k8s/configmap.yaml
-          kubectl apply -f k8s/secrets.yaml
+          kubectl apply -f k8s/secret.yaml
 
       # 6. Деплой Redis
       - name: Deploy Redis
@@ -48,8 +48,8 @@ jobs:
       # 7. Деплой NestJS
       - name: Deploy NestJS app
         run: |
-          kubectl apply -f k8s/nestjs-deployment.yaml
-          kubectl apply -f k8s/nestjs-service.yaml
+          kubectl apply -f k8s/app-deployment.yaml
+          kubectl apply -f k8s/app-service.yaml
 
       # 8. Деплой Ingress
       - name: Deploy Ingress
