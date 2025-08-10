@@ -23,19 +23,41 @@ jobs:
       # 3. Встановлення Minikube
       - name: Set up Minikube
         uses: medyagh/setup-minikube@v0.0.14
+        with:
+          minikube-version: 'latest'
+          driver: docker
 
       # 4. Збірка Docker-образу прямо в Minikube
       - name: Build Docker image in Minikube
         run: |
           eval $(minikube -p minikube docker-env)
-          docker build -t devops-test:latest .
+          docker build -t nestjs-app:latest ./nestjs-app
 
-      # 5. Деплой у Minikube
-      - name: Deploy to Minikube
+      # 5. Створення ConfigMap та Secret
+      - name: Apply ConfigMap and Secrets
         run: |
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/configmap.yaml
+          kubectl apply -f k8s/secrets.yaml
 
-      # 6. Перевірка статусу
-      - name: Check pods
-        run: kubectl get pods -o wide
+      # 6. Деплой Redis
+      - name: Deploy Redis
+        run: |
+          kubectl apply -f k8s/redis-deployment.yaml
+          kubectl apply -f k8s/redis-service.yaml
+
+      # 7. Деплой NestJS
+      - name: Deploy NestJS app
+        run: |
+          kubectl apply -f k8s/nestjs-deployment.yaml
+          kubectl apply -f k8s/nestjs-service.yaml
+
+      # 8. Деплой Ingress
+      - name: Deploy Ingress
+        run: kubectl apply -f k8s/ingress.yaml
+
+      # 9. Перевірка статусу
+      - name: Check all resources
+        run: |
+          kubectl get pods -o wide
+          kubectl get svc
+          kubectl get ingress
