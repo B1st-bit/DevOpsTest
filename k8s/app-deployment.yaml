@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: nestjs-app
-          image: YOUR_DOCKER_USER/devops-test:latest
+          image: brandnewb1st/devops-test:latest
           ports:
             - containerPort: 3000
           envFrom:

@@ -8,3 +8,5 @@ data:
   REDIS_HOST: redis
   REDIS_PORT: "6379"
   APP_PORT: "3000"
+  REDIS_PASSWORD: supersecret
+
