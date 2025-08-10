@@ -32,8 +32,8 @@ spec:
               cpu: 500m
               memory: 512Mi
             securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+             allowPrivilegeEscalation: false
+             readOnlyRootFilesystem: true
 livenessProbe:
   httpGet:
     path: /health

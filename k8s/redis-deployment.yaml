@@ -35,5 +35,5 @@ spec:
               memory: 256Mi
 
             securityContext:
-            allowPrivilegeEscalation: false
-            readOnlyRootFilesystem: true
+             allowPrivilegeEscalation: false
+             readOnlyRootFilesystem: true
