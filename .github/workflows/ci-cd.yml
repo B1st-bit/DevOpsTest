@@ -31,7 +31,7 @@ jobs:
       - name: Build Docker image in Minikube
         run: |
           eval $(minikube -p minikube docker-env)
-          docker build -t nestjs-app:latest ./nestjs-app
+          docker build -t nestjs-app:latest .
 
       # 5. Створення ConfigMap та Secret
       - name: Apply ConfigMap and Secrets
