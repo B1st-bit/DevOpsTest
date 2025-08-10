@@ -38,13 +38,13 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
-  livenessProbe:
+    livenessProbe:
             httpGet:
             path: /health
             port: 3000
             initialDelaySeconds: 10
             periodSeconds: 5
-  readinessProbe:
+    readinessProbe:
            httpGet:
            path: /health
            port: 3000
